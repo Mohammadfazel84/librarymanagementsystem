@@ -1,2 +1,10 @@
 ER 
 dbdiagram link : https://dbdiagram.io/d/66d81dc6eef7e08f0ea46584
+Table Book {
+  id integer [primary key]
+  name varchar
+  writer varchar
+  page_count integer
+  price integer
+  publish_date date
+}
