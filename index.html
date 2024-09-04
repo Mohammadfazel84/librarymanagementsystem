@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Management System</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <style>
+        /* Global Styles */
+        body {
+            background-color: #f8f9fa;
+            color: #343a40;
+            font-family: 'Roboto', sans-serif;
+            padding: 20px;
+        }
+
+        h1, h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* Navigation Links */
+        .addlink, .filterlink {
+            margin-right: 15px;
+            color: #ffffff;
+            background-color: #007bff;
+            padding: 10px 15px;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .addlink:hover, .filterlink:hover {
+            background-color: #0056b3;
+        }
+
+        /* Search Bar */
+        .topnav {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .topnav form {
+            display: inline-block;
+        }
+
+        .topnav input[type="text"] {
+            padding: 10px;
+            font-size: 17px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 300px;
+        }
+
+        .topnav button {
+            padding: 10px 15px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .topnav button:hover {
+            background-color: #218838;
+        }
+
+        /* Table Styles */
+        table {
+            width: 100%;
+            margin-top: 30px;
+            border-collapse: collapse;
+        }
+
+        table tr, table td {
+            border-bottom: 1px solid #dee2e6;
+            padding: 15px;
+            text-align: left;
+        }
+
+        table td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        table td a:hover {
+            text-decoration: underline;
+        }
+
+        /* Action Links */
+        .editlink {
+            color: #ffc107;
+        }
+
+        .editlink:hover {
+            color: #e0a800;
+        }
+
+        .deletelink {
+            color: #dc3545;
+        }
+
+        .deletelink:hover {
+            color: #c82333;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Book Management System</h1>
+<h2>Welcome to your ultimate library management system or LMS ☺</h2>
+
+<ul>
+    <a href="/add" class="addlink">Add a new book</a> 
+    <a href="/filter" class="filterlink">Filter</a>
+</ul>
+
+<div class="topnav">
+    <form action="{% url 'search' %}" method="post">
+        {% csrf_token %}
+        <input type="text" placeholder="Search for books" name='searched'>
+        <button type="submit">Search</button>
+    </form>
+</div>
+
+<table>
+    {% for book in books %}
+    <tr>
+        <td>
+            <a href="{% url 'books' book.id %}" class="showlink">{{book}}</a>
+        </td>
+        <td>
+            <a href="{% url "update" book.id %}" class="editlink">Edit</a>
+        </td>
+        <td>
+            <a href="{% url "delete" book.id %}" class="deletelink">Delete</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+</body>
+</html>
