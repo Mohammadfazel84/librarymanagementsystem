@@ -38,6 +38,8 @@ def filter(request):
     miprice = request.GET.get('miprice')
     madate = request.GET.get('madate')
     midate = request.GET.get('midate')
+    checked = request.GET.get('checked')
+    
     if is_valid_query(authororname_contains):
         qs = qs.filter(Q(name__icontains = authororname_contains) | Q(writer__icontains = authororname_contains)).distinct()
     elif is_valid_query(id_e):
@@ -51,10 +53,12 @@ def filter(request):
         qs = qs.filter(publish_date__lte=madate)
     if is_valid_query(midate):
         qs = qs.filter(publish_date__gte=midate)
-
     context = {
         'queryset' : qs
     }
+    if checked=='on':
+            qs.delete()
+            return redirect('/')
     return render(request,'filter.html',context)
 
 def add(request):
