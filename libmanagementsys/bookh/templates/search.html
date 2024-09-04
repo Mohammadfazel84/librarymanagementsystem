@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Management system</title>
+</head>
+<body>
+{% if  searched %}
+<h1>Search Results For it {{ searched }}</h1>
+<table>
+    {% for book in books %}
+    <tr>
+        <td>
+            <a href="{% url 'books' book.id %}" class="showlink">{{book}}</a>
+        </td>
+        <td>
+            <a href="{% url "update" book.id %}" class="editlink">Edit</a>
+        </td>
+        <td>
+            <a href="{% url "delete" book.id %}" class="deletelink">Delete</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+
+{% else %}
+<h1>You foolish forgot to search your a shame for your parents</h1>
+{% endif %}
+</body>
+</html>

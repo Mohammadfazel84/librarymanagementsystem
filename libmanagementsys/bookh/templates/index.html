@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Management system</title>
+</head>
+<body>
+
+<h1>Book Management system</h1>
+<h2>Welcome to your ultimate library management system or lms ☺</h2>
+<ul>
+    <a href="/add" class="addlink">Add a new book</a> <a href="/filter" class="filterlink">Filter</a> <a href="/deletebyfilter" class="deletebyfilterlink">Delete by filter</a>
+    <div class="topnav">
+        <form action="{% url 'search' %}" method="post">
+            {% csrf_token %}
+            <input type="text" placeholder="Search for books" name='searched'>
+            <button type="submit">Search</button>
+        </form>
+    </div> 
+</ul>
+<table>
+    {% for book in books %}
+    <tr>
+        <td>
+            <a href="{% url 'books' book.id %}" class="showlink">{{book}}</a>
+        </td>
+        <td>
+            <a href="{% url "update" book.id %}" class="editlink">Edit</a>
+        </td>
+        <td>
+            <a href="{% url "delete" book.id %}" class="deletelink">Delete</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+
+
+</body>
+</html>
