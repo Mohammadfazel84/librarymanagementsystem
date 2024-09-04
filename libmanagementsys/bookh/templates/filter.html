@@ -9,10 +9,20 @@
 <body>
     <center>
         <h1>Filter to get out of this big sea of my knowledge</h1>
-        {% if submitted %}
             <h1>Results For that filters</h1>
+            <form action="{% url "filter" %}" method="get">
+                <input type="text" type="search" name='authororname_contains' placeholder='Name or Author'>
+                <input type="number" type="search" name='id_e' placeholder='ID'>
+                <input type="number" type="search" name='miprice' placeholder='Min Price'>
+                <input type="number" type="search" name='maprice' placeholder='Max Price'>
+                <input type="date" type="search" name='midate' placeholder='Min publish date'>
+                <input type="date" type="search" name='madate' placeholder='Max publish date'>
+                <input type="submit" value="Filter">
+            </form>
+
+
             <table>
-                {% for book in books %}
+                {% for book in queryset %}
                 <tr>
                     <td>
                         <a href="{% url 'books' book.id %}" class="showlink">{{book}}</a>
@@ -27,14 +37,6 @@
                 {% endfor %}
             </table>
 
-        {% else %}
-        <form action="" method=POST>
-            {% csrf_token %}
-
-            {{ form.as_p}}
-            <input type="submit" value= "Filter" class"btn btn-success">
-        </form>
-        {% endif %}
     </center>
 </body>
 </html>

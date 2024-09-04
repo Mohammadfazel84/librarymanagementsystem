@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.db.models import Q
 from .models import Book
 from .forms import AddBookForm
 from django.http import Http404, HttpResponseRedirect
@@ -25,18 +26,36 @@ def search(request):
     else:
         return render(request, 'search.html',{})
 
-def filter(request):
-    submitted = False
-    if request.method == 'GET':
-        if 'submitted' in request.GET:
-            submitted=True
-        form = AddBookForm
-        return render(request, 'filter.html',{'form':form,'submitted':submitted})
-    else:
-        form = AddBookForm(request.POST)
-        books = Book.objects.filter(form)
-        return render(request, 'filter.html',{'form':form,'books':books,'submitted':submitted})
+def is_valid_query(param):
+    return param != '' and param is not None
 
+
+def filter(request):
+    qs = Book.objects.all()
+    authororname_contains = request.GET.get('authororname_contains')
+    id_e = request.GET.get('id_e')
+    maprice = request.GET.get('maprice')
+    miprice = request.GET.get('miprice')
+    madate = request.GET.get('madate')
+    midate = request.GET.get('midate')
+    if is_valid_query(authororname_contains):
+        qs = qs.filter(Q(name__icontains = authororname_contains) | Q(writer__icontains = authororname_contains)).distinct()
+    elif is_valid_query(id_e):
+        qs = qs.filter(id = id_e )
+    
+    if is_valid_query(maprice):
+        qs = qs.filter(price__lte=maprice)
+    if is_valid_query(miprice):
+        qs = qs.filter(price__gte=miprice)
+    if is_valid_query(madate):
+        qs = qs.filter(publish_date__lte=madate)
+    if is_valid_query(midate):
+        qs = qs.filter(publish_date__gte=midate)
+
+    context = {
+        'queryset' : qs
+    }
+    return render(request,'filter.html',context)
 
 def add(request):
     submitted = False
